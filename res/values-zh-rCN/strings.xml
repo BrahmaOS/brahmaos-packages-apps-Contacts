@@ -344,6 +344,7 @@
     <string name="ghostData_title" msgid="7496735200318496110">"职位"</string>
     <string name="label_notes" msgid="8337354953278341042">"备注"</string>
     <string name="label_ethereum_account_address">"以太坊帐号地址"</string>
+    <string name="label_bitcoin_account_address">"比特币帐号地址"</string>
     <string name="label_custom_field" msgid="1994056912242214426">"自定义"</string>
     <string name="label_sip_address" msgid="7252153678613978127">"SIP"</string>
     <string name="websiteLabelsGroup" msgid="4202998982804009261">"网站"</string>

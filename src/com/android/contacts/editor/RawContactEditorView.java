@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.ContactsContract.CommonDataKinds.EthereumAccountAddress;
+import android.provider.ContactsContract.CommonDataKinds.BitcoinAccountAddress;
 import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.provider.ContactsContract.CommonDataKinds.Event;
 import android.provider.ContactsContract.CommonDataKinds.GroupMembership;
@@ -135,6 +136,7 @@ public class RawContactEditorView extends LinearLayout implements View.OnClickLi
                 Organization.CONTENT_ITEM_TYPE,
                 Phone.CONTENT_ITEM_TYPE,
                 EthereumAccountAddress.CONTENT_ITEM_TYPE,
+                BitcoinAccountAddress.CONTENT_ITEM_TYPE,
                 SipAddress.CONTENT_ITEM_TYPE,
                 Email.CONTENT_ITEM_TYPE,
                 StructuredPostal.CONTENT_ITEM_TYPE,

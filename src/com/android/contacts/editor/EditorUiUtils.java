@@ -30,6 +30,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.ContactsContract.CommonDataKinds.EthereumAccountAddress;
+import android.provider.ContactsContract.CommonDataKinds.BitcoinAccountAddress;
 import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.provider.ContactsContract.CommonDataKinds.Event;
 import android.provider.ContactsContract.CommonDataKinds.Im;
@@ -109,7 +110,6 @@ public class EditorUiUtils {
         }
         return id;
     }
-
 
     public static String getAccountHeaderLabelForMyProfile(Context context,
             AccountInfo accountInfo) {
@@ -196,6 +196,9 @@ public class EditorUiUtils {
                 return ResourcesCompat.getDrawable(context.getResources(),
                         R.drawable.quantum_ic_circles_ext_vd_theme_24, null);
             case EthereumAccountAddress.CONTENT_ITEM_TYPE:
+                return ResourcesCompat.getDrawable(context.getResources(),
+                        R.drawable.quantum_ic_insert_comment_vd_theme_24, null);
+            case BitcoinAccountAddress.CONTENT_ITEM_TYPE:
                 return ResourcesCompat.getDrawable(context.getResources(),
                         R.drawable.quantum_ic_insert_comment_vd_theme_24, null);
             default:

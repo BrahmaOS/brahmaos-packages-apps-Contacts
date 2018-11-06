@@ -35,6 +35,7 @@ import android.provider.ContactsContract.CommonDataKinds.StructuredName;
 import android.provider.ContactsContract.CommonDataKinds.StructuredPostal;
 import android.provider.ContactsContract.CommonDataKinds.Website;
 import android.provider.ContactsContract.CommonDataKinds.EthereumAccountAddress;
+import android.provider.ContactsContract.CommonDataKinds.BitcoinAccountAddress;
 import android.provider.ContactsContract.Data;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -407,6 +408,18 @@ public abstract class BaseAccountType extends AccountType {
         kind.actionBody = new SimpleInflater(EthereumAccountAddress.ADDRESS);
         kind.fieldList = Lists.newArrayList();
         kind.fieldList.add(new EditField(EthereumAccountAddress.ADDRESS, R.string.label_ethereum_account_address, FLAGS_ETHEREUM_ACCOUNT_ADDRESS));
+        kind.maxLinesForDisplay = 1;
+        return kind;
+    }
+
+    protected DataKind addDataKindBitcoinAccountAddress(Context context) throws DefinitionException {
+        DataKind kind = addKind(new DataKind(BitcoinAccountAddress.CONTENT_ITEM_TYPE, R.string.label_bitcoin_account_address,
+                Weight.BITCOIN_ACCOUNT_ADDRESS, true));
+        kind.typeOverallMax = 1;
+        kind.actionHeader = new SimpleInflater(R.string.label_bitcoin_account_address);
+        kind.actionBody = new SimpleInflater(BitcoinAccountAddress.ADDRESS);
+        kind.fieldList = Lists.newArrayList();
+        kind.fieldList.add(new EditField(BitcoinAccountAddress.ADDRESS, R.string.label_bitcoin_account_address, FLAGS_BITCOIN_ACCOUNT_ADDRESS));
         kind.maxLinesForDisplay = 1;
         return kind;
     }

@@ -984,6 +984,10 @@
          about a contact -->
     <string name="label_ethereum_account_address">Ethereum account address</string>
 
+    <!-- The label describing the BitcoinAccountAddress field of a contact. This field allows free form text entry
+         about a contact -->
+    <string name="label_bitcoin_account_address">Bitcoin account address</string>
+
     <!-- The label describing the custom field of a contact. [CHAR LIMIT=20] -->
     <string name="label_custom_field">Custom</string>
 

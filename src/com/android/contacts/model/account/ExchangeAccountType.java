@@ -64,6 +64,7 @@ public class ExchangeAccountType extends BaseAccountType {
             addDataKindPhoto(context);
             addDataKindNote(context);
             addDataKindEthereumAccountAddress(context);
+            addDataKindBitcoinAccountAddress(context);
             addDataKindEvent(context);
             addDataKindWebsite(context);
             addDataKindGroupMembership(context);

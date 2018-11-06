@@ -65,6 +65,7 @@ public class GoogleAccountType extends BaseAccountType {
             addDataKindPhoto(context);
             addDataKindNote(context);
             addDataKindEthereumAccountAddress(context);
+            addDataKindBitcoinAccountAddress(context);
             addDataKindWebsite(context);
             addDataKindSipAddress(context);
             addDataKindGroupMembership(context);

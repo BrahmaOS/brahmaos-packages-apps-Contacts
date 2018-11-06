@@ -38,6 +38,7 @@ import android.provider.ContactsContract.CommonDataKinds.StructuredName;
 import android.provider.ContactsContract.CommonDataKinds.StructuredPostal;
 import android.provider.ContactsContract.CommonDataKinds.Website;
 import android.provider.ContactsContract.CommonDataKinds.EthereumAccountAddress;
+import android.provider.ContactsContract.CommonDataKinds.BitcoinAccountAddress;
 import android.provider.ContactsContract.Data;
 import android.provider.ContactsContract.Intents;
 import android.provider.ContactsContract.Intents.Insert;
@@ -587,10 +588,20 @@ public class RawContactModifier {
         final DataKind kindEthereumAccountAddress = accountType.getKindForMimetype(EthereumAccountAddress.CONTENT_ITEM_TYPE);
         if (hasEthereumAccountAddress && RawContactModifier.canInsert(state, kindEthereumAccountAddress)) {
             final ValuesDelta child = RawContactModifier.insertChild(state, kindEthereumAccountAddress);
-
             final String address = extras.getString(Insert.ETHEREUM_ACCOUNT_ADDRESS);
             if (ContactsUtils.isGraphic(address)) {
                 child.put(EthereumAccountAddress.ADDRESS, address);
+            }
+        }
+
+        // Bitcoin account address
+        final boolean hasBitcoinAccountAddress = extras.containsKey(Insert.BITCOIN_ACCOUNT_ADDRESS);
+        final DataKind kindBitcoinAccountAddress = accountType.getKindForMimetype(BitcoinAccountAddress.CONTENT_ITEM_TYPE);
+        if (hasBitcoinAccountAddress && RawContactModifier.canInsert(state, kindBitcoinAccountAddress)) {
+            final ValuesDelta child = RawContactModifier.insertChild(state, kindBitcoinAccountAddress);
+            final String address = extras.getString(Insert.BITCOIN_ACCOUNT_ADDRESS);
+            if (ContactsUtils.isGraphic(address)) {
+                child.put(BitcoinAccountAddress.ADDRESS, address);
             }
         }
 
