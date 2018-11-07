@@ -74,6 +74,7 @@ public abstract class BaseAccountType extends AccountType {
             | EditorInfo.TYPE_TEXT_FLAG_CAP_SENTENCES | EditorInfo.TYPE_TEXT_FLAG_MULTI_LINE;
     protected static final int FLAGS_EVENT = EditorInfo.TYPE_CLASS_TEXT;
     protected static final int FLAGS_ETHEREUM_ACCOUNT_ADDRESS = EditorInfo.TYPE_CLASS_TEXT;
+    protected static final int FLAGS_BITCOIN_ACCOUNT_ADDRESS = EditorInfo.TYPE_CLASS_TEXT;
     protected static final int FLAGS_WEBSITE = EditorInfo.TYPE_CLASS_TEXT
             | EditorInfo.TYPE_TEXT_VARIATION_URI;
     protected static final int FLAGS_POSTAL = EditorInfo.TYPE_CLASS_TEXT
@@ -118,6 +119,7 @@ public abstract class BaseAccountType extends AccountType {
         static final int GROUP_MEMBERSHIP = 150;
         static final int WEBSITE = 160;
         static final int ETHEREUM_ACCOUNT_ADDRESS = 170;
+        static final int BITCOIN_ACCOUNT_ADDRESS = 180;
         static final int RELATIONSHIP = 999;
     }
 
