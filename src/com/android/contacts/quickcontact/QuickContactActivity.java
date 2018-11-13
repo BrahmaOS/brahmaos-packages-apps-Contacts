@@ -140,10 +140,12 @@ import com.android.contacts.model.Contact;
 import com.android.contacts.model.ContactLoader;
 import com.android.contacts.model.RawContact;
 import com.android.contacts.model.account.AccountType;
+import com.android.contacts.model.dataitem.BitcoinAccountAddressDataItem;
 import com.android.contacts.model.dataitem.CustomDataItem;
 import com.android.contacts.model.dataitem.DataItem;
 import com.android.contacts.model.dataitem.DataKind;
 import com.android.contacts.model.dataitem.EmailDataItem;
+import com.android.contacts.model.dataitem.EthereumAccountAddressDataItem;
 import com.android.contacts.model.dataitem.EventDataItem;
 import com.android.contacts.model.dataitem.ImDataItem;
 import com.android.contacts.model.dataitem.NicknameDataItem;
@@ -756,7 +758,6 @@ public class QuickContactActivity extends ContactsActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(mListener,
                 intentFilter);
 
-
         mShouldLog = true;
 
         // There're 3 states for each permission:
@@ -1007,7 +1008,6 @@ public class QuickContactActivity extends ContactsActivity {
         mExtraPrioritizedMimeType =
                 getIntent().getStringExtra(QuickContact.EXTRA_PRIORITIZED_MIMETYPE);
         final Uri oldLookupUri = mLookupUri;
-
 
         if (lookupUri == null) {
             finish();
@@ -1886,8 +1886,7 @@ public class QuickContactActivity extends ContactsActivity {
             final SipAddressDataItem sip = (SipAddressDataItem) dataItem;
             final String address = sip.getSipAddress();
             if (!TextUtils.isEmpty(address)) {
-                primaryContentDescription.append(res.getString(R.string.call_other)).append(
-                        " ");
+                primaryContentDescription.append(res.getString(R.string.call_other)).append(" ");
                 if (PhoneCapabilityTester.isSipPhone(context)) {
                     final Uri callUri = Uri.fromParts(PhoneAccount.SCHEME_SIP, address, null);
                     intent = CallUtil.getCallIntent(callUri);
@@ -1923,6 +1922,38 @@ public class QuickContactActivity extends ContactsActivity {
                 dataItem.getMimeType())) {
             // Skip these actions. They will be placed by the phone number.
             return null;
+        } else if (dataItem instanceof EthereumAccountAddressDataItem) {
+            final EthereumAccountAddressDataItem ethereumAccountAddress = (EthereumAccountAddressDataItem) dataItem;
+            final String address = ethereumAccountAddress.getAddress();
+            if (!TextUtils.isEmpty(address)) {
+                header = address;
+                subHeader = res.getString(R.string.header_ethereum_account_address_entry);
+                iconResourceId = R.drawable.quantum_ic_ethereum_vd_theme_24;
+                icon = res.getDrawable(iconResourceId);
+                alternateIntent = new Intent(Intent.ACTION_SENDTO,
+                        Uri.fromParts(ContactsUtils.SCHEME_SMSTO, "18912345678", null));
+                alternateIntent.putExtra(EXTRA_ACTION_TYPE, ActionType.SMS);
+                alternateIcon = res.getDrawable(R.drawable.quantum_ic_transfer_vd_theme_24);
+                alternateContentDescription.append(res.getString(R.string.sms_custom, header));
+                entryContextMenuInfo = new EntryContextMenuInfo(header, subHeader,
+                        dataItem.getMimeType(), dataItem.getId(), dataItem.isSuperPrimary());
+            }
+        } else if (dataItem instanceof BitcoinAccountAddressDataItem) {
+            final BitcoinAccountAddressDataItem bitcoinAccountAddress = (BitcoinAccountAddressDataItem) dataItem;
+            final String address = bitcoinAccountAddress.getAddress();
+            if (!TextUtils.isEmpty(address)) {
+                header = address;
+                subHeader = res.getString(R.string.header_bitcoin_account_address_entry);
+                iconResourceId = R.drawable.quantum_ic_bitcoin_vd_theme_24;
+                icon = res.getDrawable(iconResourceId);
+                alternateIntent = new Intent(Intent.ACTION_SENDTO,
+                        Uri.fromParts(ContactsUtils.SCHEME_SMSTO, "18912345678", null));
+                alternateIntent.putExtra(EXTRA_ACTION_TYPE, ActionType.SMS);
+                alternateIcon = res.getDrawable(R.drawable.quantum_ic_transfer_vd_theme_24);
+                alternateContentDescription.append(res.getString(R.string.sms_custom, header));
+                entryContextMenuInfo = new EntryContextMenuInfo(header, subHeader,
+                        dataItem.getMimeType(), dataItem.getId(), dataItem.isSuperPrimary());
+            }
         } else {
             // Custom DataItem
             header = dataItem.buildDataStringForDisplay(context, kind);

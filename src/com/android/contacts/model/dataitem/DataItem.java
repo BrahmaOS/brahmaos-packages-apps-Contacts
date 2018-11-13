@@ -18,6 +18,7 @@ package com.android.contacts.model.dataitem;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.provider.ContactsContract.CommonDataKinds.Event;
 import android.provider.ContactsContract.CommonDataKinds.GroupMembership;
@@ -33,6 +34,8 @@ import android.provider.ContactsContract.CommonDataKinds.SipAddress;
 import android.provider.ContactsContract.CommonDataKinds.StructuredName;
 import android.provider.ContactsContract.CommonDataKinds.StructuredPostal;
 import android.provider.ContactsContract.CommonDataKinds.Website;
+import android.provider.ContactsContract.CommonDataKinds.EthereumAccountAddress;
+import android.provider.ContactsContract.CommonDataKinds.BitcoinAccountAddress;
 import android.provider.ContactsContract.Contacts.Data;
 import android.provider.ContactsContract.Contacts.Entity;
 
@@ -90,6 +93,10 @@ public class DataItem implements Collapser.Collapsible<DataItem> {
             return new PhotoDataItem(values);
         } else if (CustomDataItem.MIMETYPE_CUSTOM_FIELD.equals(mimeType)) {
             return new CustomDataItem(values);
+        } else if (EthereumAccountAddress.CONTENT_ITEM_TYPE.equals(mimeType)) {
+            return new EthereumAccountAddressDataItem(values);
+        } else if (BitcoinAccountAddress.CONTENT_ITEM_TYPE.equals(mimeType)) {
+            return new BitcoinAccountAddressDataItem(values);
         }
 
         // generic

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2018 BRAHMACARIYA FOUNDATION LTD.
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="24dp"
+        android:height="24dp"
+        android:viewportWidth="1024.0"
+        android:viewportHeight="1024.0"
+        android:tint="?attr/colorControlNormal">
+    <path android:fillColor="#F7931A" android:pathData="M1008.53,635.91c-68.35,274.33 -346.14,441.17 -620.43,372.73C113.93,940.8 -53.08,662.41 15.47,388.49 83.72,113.94 361.6,-53 635.74,15.28c274.33,68.48 441.24,346.23 372.82,620.69v-0.1zM737.63,439.08c10.24,-67.84 -41.57,-104.54 -112.64,-129.28l23.04,-91.87 -56.1,-14.08 -22.4,89.89c-14.72,-3.71 -30.08,-7.14 -45.41,-10.66l22.43,-90.75 -56.32,-14.08 -23.04,92.38c-12.16,-2.85 -24.1,-5.63 -35.84,-8.54l-77.44,-19.2 -14.94,60.03s41.6,9.6 40.74,10.08c22.82,5.79 26.88,20.74 26.24,32.67l-63.01,252.57c-3.2,7.07 -10.24,17.31 -26.21,13.41 0.64,0.86 -40.96,-10.24 -40.96,-10.24l-28.16,64.42 72.96,18.17 39.68,10.34 -23.04,93.44 56.32,13.95 23.04,-92.57c15.36,4.26 30.08,8.1 44.8,11.65l-21.76,91.9 56.32,14.08 23.26,-93.44c95.58,18.21 167.68,10.98 197.98,-75.68 24.32,-69.85 -1.28,-110.08 -51.94,-136.35 36.45,-8.22 64,-32.42 71.68,-82.33h0.42zM609.18,619.14c-17.25,69.98 -134.68,32 -172.8,22.62l30.72,-123.74c38.24,9.82 160.29,28.58 142.08,101.12zM626.69,438.25c-15.78,63.58 -113.57,31.36 -145.28,23.45l27.9,-112.64c31.74,7.68 133.85,22.37 117.34,88.93v0.26z"/>
+</vector>

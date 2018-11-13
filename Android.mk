@@ -23,7 +23,6 @@ LOCAL_RESOURCE_DIR := $(addprefix $(LOCAL_PATH)/, $(res_dirs)) \
     $(support_library_root_dir)/v7/cardview/res \
     $(support_library_root_dir)/v7/recyclerview/res
 LOCAL_ASSET_DIR := $(addprefix $(LOCAL_PATH)/, $(asset_dirs))
-LOCAL_DEX_PREOPT := false
 
 LOCAL_AAPT_FLAGS := \
     --auto-add-overlay \

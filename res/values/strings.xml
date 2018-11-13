@@ -631,6 +631,11 @@
     <string name="header_email_entry">Email</string>
     <!-- Content description for the phone fields header entry [CHAR LIMIT=NONE] -->
     <string name="header_phone_entry">Phone</string>
+    <!-- Content description for the ethereum account address fields header entry [CHAR LIMIT=NONE] -->
+    <string name="header_ethereum_account_address_entry">Ethereum Account</string>
+
+    <!-- Content description for the bitcoin account address fields header entry [CHAR LIMIT=NONE] -->
+    <string name="header_bitcoin_account_address_entry">Bitcoin Account</string>
 
     <!-- Content description for directions secondary button [CHAR LIMIT=NONE] -->
     <string name="content_description_directions">directions to location</string>

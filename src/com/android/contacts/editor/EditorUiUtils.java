@@ -197,10 +197,10 @@ public class EditorUiUtils {
                         R.drawable.quantum_ic_circles_ext_vd_theme_24, null);
             case EthereumAccountAddress.CONTENT_ITEM_TYPE:
                 return ResourcesCompat.getDrawable(context.getResources(),
-                        R.drawable.quantum_ic_insert_comment_vd_theme_24, null);
+                        R.drawable.quantum_ic_ethereum_vd_theme_24, null);
             case BitcoinAccountAddress.CONTENT_ITEM_TYPE:
                 return ResourcesCompat.getDrawable(context.getResources(),
-                        R.drawable.quantum_ic_insert_comment_vd_theme_24, null);
+                        R.drawable.quantum_ic_bitcoin_vd_theme_24, null);
             default:
                 return null;
         }
