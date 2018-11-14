@@ -587,19 +587,19 @@ public class RawContactEditorView extends LinearLayout implements View.OnClickLi
         final AccountType accountType = mCurrentRawContactDelta.getAccountType(mAccountTypeManager);
         final List<DataKind> dataKinds = accountType.getSortedDataKinds();
         final int dataKindSize = dataKinds == null ? 0 : dataKinds.size();
-//        if (Log.isLoggable(TAG, Log.DEBUG)) {
+        if (Log.isLoggable(TAG, Log.DEBUG)) {
             Log.d(TAG, "parse: " + dataKindSize + " dataKinds(s)");
-//        }
+        }
 
         for (int i = 0; i < dataKindSize; i++) {
             final DataKind dataKind = dataKinds.get(i);
             // Skip null and un-editable fields.
             if (dataKind == null || !dataKind.editable) {
-                //if (Log.isLoggable(TAG, Log.DEBUG)) {
+                if (Log.isLoggable(TAG, Log.DEBUG)) {
                     Log.d(TAG, "parse: " + i +
                             (dataKind == null ? " dropped null data kind"
                                     : " dropped uneditable mimetype: " + dataKind.mimeType));
-                //}
+                }
                 continue;
             }
             final String mimeType = dataKind.mimeType;
@@ -607,9 +607,9 @@ public class RawContactEditorView extends LinearLayout implements View.OnClickLi
             // Skip psuedo mime types
             if (DataKind.PSEUDO_MIME_TYPE_NAME.equals(mimeType) ||
                     DataKind.PSEUDO_MIME_TYPE_PHONETIC_NAME.equals(mimeType)) {
-                //if (Log.isLoggable(TAG, Log.DEBUG)) {
+                if (Log.isLoggable(TAG, Log.DEBUG)) {
                     Log.d(TAG, "parse: " + i + " " + dataKind.mimeType + " dropped pseudo type");
-                //}
+                }
                 continue;
             }
 
@@ -627,13 +627,13 @@ public class RawContactEditorView extends LinearLayout implements View.OnClickLi
             mKindSectionDataMap.put(mimeType, kindSectionData);
             mSortedMimetypes.add(mimeType);
 
-            //if (Log.isLoggable(TAG, Log.DEBUG)) {
+            if (Log.isLoggable(TAG, Log.DEBUG)) {
                 Log.d(TAG, "parse: " + i + " " + dataKind.mimeType + " " +
                         kindSectionData.getValuesDeltas().size() + " value(s) " +
                         kindSectionData.getNonEmptyValuesDeltas().size() + " non-empty value(s) " +
                         kindSectionData.getVisibleValuesDeltas().size() +
                         " visible value(s)");
-            //}
+            }
         }
     }
 
@@ -897,13 +897,16 @@ public class RawContactEditorView extends LinearLayout implements View.OnClickLi
         kindSectionView.setIsUserProfile(mIsUserProfile);
 
         if (Phone.CONTENT_ITEM_TYPE.equals(mimeType)
-                || Email.CONTENT_ITEM_TYPE.equals(mimeType)) {
-            // Phone numbers and email addresses are always displayed,
+                || Email.CONTENT_ITEM_TYPE.equals(mimeType)
+                || EthereumAccountAddress.CONTENT_ITEM_TYPE.equals(mimeType)
+                || BitcoinAccountAddress.CONTENT_ITEM_TYPE.equals(mimeType)) {
+            // Phone numbers, email addresses, ethereum and bitcoin account are always displayed,
             // even if they are empty
             kindSectionView.setHideWhenEmpty(false);
         }
 
-        // Since phone numbers and email addresses displayed even if they are empty,
+        // Since phone numbers, email addresses, ethereum and bitcoin account displayed,
+        // even if they are empty,
         // they will be the only types you add new values to initially for new contacts
         kindSectionView.setShowOneEmptyEditor(true);
 

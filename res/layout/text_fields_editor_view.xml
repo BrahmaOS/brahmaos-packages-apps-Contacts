@@ -27,11 +27,24 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/editors"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/editors"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+            <ImageView
+                android:id="@+id/operate"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="right|bottom"
+                android:layout_marginBottom="20dp"
+                android:layout_marginRight="8dp"
+                android:background="@android:color/white"
+                android:visibility="gone"/>
+        </FrameLayout>
 
         <include
             android:id="@+id/spinner"

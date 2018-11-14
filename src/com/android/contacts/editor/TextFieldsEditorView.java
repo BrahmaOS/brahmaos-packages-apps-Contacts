@@ -59,6 +59,7 @@ public class TextFieldsEditorView extends LabeledEditorView {
     private EditText[] mFieldEditTexts = null;
     private ViewGroup mFields = null;
     protected View mExpansionViewContainer;
+    protected ImageView mOperateView;
     protected ImageView mExpansionView;
     protected String mCollapseButtonDescription;
     protected String mExpandButtonDescription;
@@ -95,6 +96,7 @@ public class TextFieldsEditorView extends LabeledEditorView {
         mFields = (ViewGroup) findViewById(R.id.editors);
         mHintTextColorUnfocused = getResources().getColor(R.color.editor_disabled_text_color);
         mExpansionView = (ImageView) findViewById(R.id.expansion_view);
+        mOperateView = findViewById(R.id.operate);
         mCollapseButtonDescription = getResources()
                 .getString(R.string.collapse_fields_description);
         mCollapsedAnnouncement = getResources()
@@ -190,6 +192,21 @@ public class TextFieldsEditorView extends LabeledEditorView {
         mExpansionViewContainer.setVisibility(shouldExist ? View.VISIBLE : View.INVISIBLE);
     }
 
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
+
+    private void setupOperateView(boolean showOperate, int iconResourceId, EditText fieldView) {
+        if (mOperateView != null) {
+            mOperateView.setVisibility(showOperate ? View.VISIBLE : View.GONE);
+            if (showOperate) {
+                mOperateView.setImageDrawable(getContext().getDrawable(iconResourceId));
+                fieldView.setPadding(0, 0, dip2px(getContext(), 40), 0);
+            }
+        }
+    }
+
     @Override
     protected void requestFocusForFirstEditField() {
         if (mFieldEditTexts != null && mFieldEditTexts.length != 0) {
@@ -273,6 +290,14 @@ public class TextFieldsEditorView extends LabeledEditorView {
                 fieldView.setText(PhoneNumberUtilsCompat.createTtsSpannable(value));
             } else {
                 fieldView.setText(value);
+            }
+
+            // Show scan icon for ethereum and bitcoin account
+            if (ContactsContract.CommonDataKinds.EthereumAccountAddress.CONTENT_ITEM_TYPE.equals(kind.mimeType)
+                    || ContactsContract.CommonDataKinds.BitcoinAccountAddress.CONTENT_ITEM_TYPE.equals(kind.mimeType)) {
+                setupOperateView(true, R.drawable.quantum_ic_scan_vd_theme_24, fieldView);
+            } else {
+                setupOperateView(false, 0, fieldView);
             }
 
             // Show the delete button if we have a non-empty value

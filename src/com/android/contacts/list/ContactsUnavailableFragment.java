@@ -149,6 +149,7 @@ public class ContactsUnavailableFragment extends Fragment implements OnClickList
             mAddAccountButton.setVisibility(visibility);
             mImportContactsButton.setVisibility(visibility);
         }
+        mAddAccountButton.setVisibility(View.GONE);
     }
 
     @Override
