@@ -16,14 +16,18 @@
 
 package com.android.contacts.activities;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract.QuickContact;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -41,6 +45,8 @@ import com.android.contacts.interactions.ContactDeletionInteraction;
 import com.android.contacts.model.RawContactDeltaList;
 import com.android.contacts.util.DialogManager;
 import com.android.contacts.util.ImplicitIntentsUtil;
+import com.android.contacts.util.PermissionUtil;
+import com.android.contacts.util.barcode.CaptureActivity;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;

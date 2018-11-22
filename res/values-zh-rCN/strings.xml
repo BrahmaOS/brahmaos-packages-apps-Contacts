@@ -533,4 +533,7 @@
     <string name="importing_sim_failed_message" msgid="3345258302998021066">"无法导入 SIM 卡中的联系人"</string>
     <string name="importing_sim_in_progress_title" msgid="3638299581276676109">"正在导入 SIM 卡联系人"</string>
     <string name="contacts_default_notification_channel" msgid="4754058700611188581">"通知"</string>
+
+    <string name="title_capture_code">扫码</string>
+    <string name="tip_scan_code_failed">扫码失败</string>
 </resources>

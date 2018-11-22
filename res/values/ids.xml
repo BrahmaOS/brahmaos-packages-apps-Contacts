@@ -98,4 +98,12 @@
     <item type="id" name="tag_contact_type"/>
 
     <item type="id" name="menu_save"/>
+
+    <item type="id" name="decode"/>
+    <item type="id" name="decode_failed"/>
+    <item type="id" name="decode_succeeded"/>
+    <item type="id" name="launch_product_query"/>
+    <item type="id" name="quit"/>
+    <item type="id" name="restart_preview"/>
+    <item type="id" name="return_scan_result"/>
 </resources>

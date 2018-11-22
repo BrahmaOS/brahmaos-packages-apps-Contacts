@@ -256,4 +256,12 @@
     <!-- Highlight color used in places such as ripples -->
     <color name="control_highlight_color">#1A000000</color>
 
+    <color name="colorAccent">#74a7f5</color>
+    <color name="viewfinder_laser">#ffcc0000</color>  <!-- Android standard ICS color -->
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="viewfinder_btn_bg">#20000000</color>
+    <color name="result_view">#b0000000</color>
+    <color name="possible_result_points">#c0ffbd21</color>  <!-- Android standard ICS color -->
+    <color name="result_points">#c099cc00</color>  <!-- Android standard ICS color -->
+    <color name="light_green">#70ff56</color>
 </resources>

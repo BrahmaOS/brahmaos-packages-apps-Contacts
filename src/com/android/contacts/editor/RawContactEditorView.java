@@ -197,6 +197,7 @@ public class RawContactEditorView extends LinearLayout implements View.OnClickLi
     }
 
     private RawContactEditorView.Listener mListener;
+    private TextFieldsEditorView.OperateListener mOperateListener;
 
     private AccountTypeManager mAccountTypeManager;
     private LayoutInflater mLayoutInflater;
@@ -256,12 +257,12 @@ public class RawContactEditorView extends LinearLayout implements View.OnClickLi
 
         // Account header
         mAccountHeaderContainer = findViewById(R.id.account_header_container);
-        mAccountHeaderPrimaryText = (TextView) findViewById(R.id.account_type);
-        mAccountHeaderSecondaryText = (TextView) findViewById(R.id.account_name);
-        mAccountHeaderIcon = (ImageView) findViewById(R.id.account_type_icon);
-        mAccountHeaderExpanderIcon = (ImageView) findViewById(R.id.account_expander_icon);
+        mAccountHeaderPrimaryText = findViewById(R.id.account_type);
+        mAccountHeaderSecondaryText = findViewById(R.id.account_name);
+        mAccountHeaderIcon = findViewById(R.id.account_type_icon);
+        mAccountHeaderExpanderIcon = findViewById(R.id.account_expander_icon);
 
-        mPhotoView = (PhotoEditorView) findViewById(R.id.photo_editor);
+        mPhotoView = findViewById(R.id.photo_editor);
         mKindSectionViews = (LinearLayout) findViewById(R.id.kind_section_views);
         mMoreFields = findViewById(R.id.more_fields);
         mMoreFields.setOnClickListener(this);
@@ -310,6 +311,10 @@ public class RawContactEditorView extends LinearLayout implements View.OnClickLi
      */
     public void setPhotoListener(PhotoEditorView.Listener listener) {
         mPhotoView.setListener(listener);
+    }
+
+    public void setOperateListener(TextFieldsEditorView.OperateListener listener) {
+        this.mOperateListener = listener;
     }
 
     public void removePhoto() {
@@ -903,6 +908,11 @@ public class RawContactEditorView extends LinearLayout implements View.OnClickLi
             // Phone numbers, email addresses, ethereum and bitcoin account are always displayed,
             // even if they are empty
             kindSectionView.setHideWhenEmpty(false);
+        }
+
+        if (EthereumAccountAddress.CONTENT_ITEM_TYPE.equals(mimeType)
+                || BitcoinAccountAddress.CONTENT_ITEM_TYPE.equals(mimeType)) {
+            kindSectionView.setOperateListener(mOperateListener);
         }
 
         // Since phone numbers, email addresses, ethereum and bitcoin account displayed,

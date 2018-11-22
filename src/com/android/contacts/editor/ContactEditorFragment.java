@@ -16,6 +16,7 @@
 
 package com.android.contacts.editor;
 
+import android.Manifest;
 import android.accounts.Account;
 import android.app.Activity;
 import android.app.Fragment;
@@ -27,6 +28,7 @@ import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -41,6 +43,7 @@ import android.provider.ContactsContract.CommonDataKinds.StructuredName;
 import android.provider.ContactsContract.CommonDataKinds.StructuredPostal;
 import android.provider.ContactsContract.Intents;
 import android.provider.ContactsContract.RawContacts;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -80,14 +83,18 @@ import com.android.contacts.model.account.AccountInfo;
 import com.android.contacts.model.account.AccountType;
 import com.android.contacts.model.account.AccountWithDataSet;
 import com.android.contacts.model.account.AccountsLoader;
+import com.android.contacts.model.dataitem.DataKind;
 import com.android.contacts.preference.ContactsPreferences;
 import com.android.contacts.quickcontact.InvisibleContactUtil;
 import com.android.contacts.quickcontact.QuickContactActivity;
+import com.android.contacts.util.BitcoinPaymentURI;
 import com.android.contacts.util.ContactDisplayUtils;
 import com.android.contacts.util.ContactPhotoUtils;
 import com.android.contacts.util.ImplicitIntentsUtil;
 import com.android.contacts.util.MaterialColorMapUtils;
+import com.android.contacts.util.PermissionUtil;
 import com.android.contacts.util.UiClosables;
+import com.android.contacts.util.barcode.CaptureActivity;
 import com.android.contactsbind.HelpUtils;
 
 import com.google.common.base.Preconditions;
@@ -110,7 +117,9 @@ public class ContactEditorFragment extends Fragment implements
         JoinContactConfirmationDialogFragment.Listener,
         AggregationSuggestionEngine.Listener, AggregationSuggestionView.Listener,
         CancelEditDialogFragment.Listener,
-        RawContactEditorView.Listener, PhotoEditorView.Listener,
+        RawContactEditorView.Listener,
+        PhotoEditorView.Listener,
+        TextFieldsEditorView.OperateListener,
         AccountsLoader.AccountsListener {
 
     static final String TAG = "ContactEditor";
@@ -165,6 +174,9 @@ public class ContactEditorFragment extends Fragment implements
     protected static final int REQUEST_CODE_JOIN = 0;
     protected static final int REQUEST_CODE_ACCOUNTS_CHANGED = 1;
 
+    protected static final int REQUEST_CODE_SCAN_ETHEREUM_QR = 2;
+    protected static final int REQUEST_CODE_SCAN_BITCOIN_QR = 3;
+
     /**
      * An intent extra that forces the editor to add the edited contact
      * to the default group (e.g. "My Contacts").
@@ -213,6 +225,62 @@ public class ContactEditorFragment extends Fragment implements
      * Intent extra key for the contact ID to join the current contact to after saving.
      */
     public static final String JOIN_CONTACT_ID_EXTRA_KEY = "joinContactId";
+
+    private TextFieldsEditorView editorView;
+    private DataKind dataKind;
+
+    /**
+     * Click
+     */
+    @Override
+    public void onClickOperateView(TextFieldsEditorView view, DataKind kind) {
+        editorView = view;
+        dataKind = kind;
+        startScan();
+    }
+
+    // start CaptureActivity
+    public void startScan() {
+        if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+            requestCameraScanPermission();
+        } else {
+            Intent intent = new Intent(getContext(), CaptureActivity.class);
+            if (dataKind.mimeType.equals(ContactsContract.CommonDataKinds.BitcoinAccountAddress.CONTENT_ITEM_TYPE)) {
+                startActivityForResult(intent, REQUEST_CODE_SCAN_BITCOIN_QR);
+            } else if (dataKind.mimeType.equals(ContactsContract.CommonDataKinds.EthereumAccountAddress.CONTENT_ITEM_TYPE)) {
+                startActivityForResult(intent, REQUEST_CODE_SCAN_ETHEREUM_QR);
+            }
+        }
+    }
+
+    // Request camera permission
+    public void requestCameraScanPermission() {
+        requestPermissions(PermissionUtil.CAMERA_PERMISSIONS, PermissionUtil.CODE_CAMERA_SCAN);
+    }
+
+    public void handleCameraScanPermission() {
+        Intent intent = new Intent(getContext(), CaptureActivity.class);
+        if (dataKind.mimeType.equals(ContactsContract.CommonDataKinds.BitcoinAccountAddress.CONTENT_ITEM_TYPE)) {
+            startActivityForResult(intent, REQUEST_CODE_SCAN_BITCOIN_QR);
+        } else if (dataKind.mimeType.equals(ContactsContract.CommonDataKinds.EthereumAccountAddress.CONTENT_ITEM_TYPE)) {
+            startActivityForResult(intent, REQUEST_CODE_SCAN_ETHEREUM_QR);
+        }
+    }
+
+    /**
+     * Callback received when a permissions request has been completed.
+     */
+    @Override
+    public void onRequestPermissionsResult(final int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == PermissionUtil.CODE_CAMERA_SCAN) {
+            if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+                PermissionUtil.openSettingActivity(mContext, getString(R.string.tip_camera_permission));
+            } else {
+                handleCameraScanPermission();
+            }
+        }
+    }
 
     /**
      * Callbacks for Activities that host contact editors Fragments.
@@ -646,6 +714,7 @@ public class ContactEditorFragment extends Fragment implements
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("ContactEditorFragment", "onActivityResult");
         switch (requestCode) {
             case REQUEST_CODE_JOIN: {
                 // Ignore failed requests
@@ -674,6 +743,34 @@ public class ContactEditorFragment extends Fragment implements
                 AccountWithDataSet account = data.getParcelableExtra(
                         Intents.Insert.EXTRA_ACCOUNT);
                 createContact(account);
+                break;
+            }
+            case REQUEST_CODE_SCAN_ETHEREUM_QR: {
+                if (resultCode == Activity.RESULT_OK) {
+                    if (data != null) {
+                        String qrCode = data.getStringExtra(com.android.contacts.util.barcode.Intents.Scan.RESULT);
+                        if (qrCode != null && qrCode.length() > 0) {
+                            Log.d(getTag(), qrCode);
+                            if (editorView != null) {
+                                editorView.setValue(0, qrCode);
+                            }
+                        }
+                    }
+                }
+                break;
+            }
+            case REQUEST_CODE_SCAN_BITCOIN_QR: {
+                if (resultCode == Activity.RESULT_OK) {
+                    if (data != null) {
+                        String qrCode = data.getStringExtra(com.android.contacts.util.barcode.Intents.Scan.RESULT);
+                        if (qrCode != null && qrCode.length() > 0) {
+                            BitcoinPaymentURI bitcoinUri = BitcoinPaymentURI.parse(qrCode);
+                            if (bitcoinUri != null &&editorView != null) {
+                                editorView.setValue(0, bitcoinUri.getAddress());
+                            }
+                        }
+                    }
+                }
                 break;
             }
         }
@@ -1250,6 +1347,7 @@ public class ContactEditorFragment extends Fragment implements
         // Add input fields for the loaded Contact
         final RawContactEditorView editorView = getContent();
         editorView.setListener(this);
+        editorView.setOperateListener(this);
         if (mCopyReadOnlyName) {
             copyReadOnlyName();
         }

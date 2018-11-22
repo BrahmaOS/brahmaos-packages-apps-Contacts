@@ -1886,8 +1886,7 @@ public class QuickContactActivity extends ContactsActivity {
             final SipAddressDataItem sip = (SipAddressDataItem) dataItem;
             final String address = sip.getSipAddress();
             if (!TextUtils.isEmpty(address)) {
-                primaryContentDescription.append(res.getString(R.string.call_other)).append(
-                        " ");
+                primaryContentDescription.append(res.getString(R.string.call_other)).append(" ");
                 if (PhoneCapabilityTester.isSipPhone(context)) {
                     final Uri callUri = Uri.fromParts(PhoneAccount.SCHEME_SIP, address, null);
                     intent = CallUtil.getCallIntent(callUri);

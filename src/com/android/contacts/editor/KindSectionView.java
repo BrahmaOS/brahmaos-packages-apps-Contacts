@@ -18,6 +18,7 @@ package com.android.contacts.editor;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Event;
 import android.provider.ContactsContract.CommonDataKinds.GroupMembership;
 import android.provider.ContactsContract.CommonDataKinds.Nickname;
@@ -153,6 +154,7 @@ public class KindSectionView extends LinearLayout {
     private KindSectionData mKindSectionData;
     private ViewIdGenerator mViewIdGenerator;
     private RawContactEditorView.Listener mListener;
+    private TextFieldsEditorView.OperateListener mOperateListener;
 
     private boolean mIsUserProfile;
     private boolean mShowOneEmptyEditor = false;
@@ -179,6 +181,10 @@ public class KindSectionView extends LinearLayout {
                 mEditors.getChildAt(i).setEnabled(enabled);
             }
         }
+    }
+
+    public void setOperateListener(TextFieldsEditorView.OperateListener listener) {
+        this.mOperateListener = listener;
     }
 
     @Override
@@ -405,6 +411,14 @@ public class KindSectionView extends LinearLayout {
             editor.setEditorListener(editorListener);
             editor.setValues(dataKind, valuesDelta, rawContactDelta, !dataKind.editable,
                     mViewIdGenerator);
+        }
+
+        if (view instanceof TextFieldsEditorView) {
+            if (dataKind.mimeType.equals(ContactsContract.CommonDataKinds.EthereumAccountAddress.CONTENT_ITEM_TYPE)
+                    || dataKind.mimeType.equals(ContactsContract.CommonDataKinds.BitcoinAccountAddress.CONTENT_ITEM_TYPE)) {
+                final TextFieldsEditorView editor = (TextFieldsEditorView) view;
+                editor.setOperateListener(mOperateListener);
+            }
         }
         mEditors.addView(view);
 

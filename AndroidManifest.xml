@@ -17,7 +17,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.android.contacts"
           android:versionCode="1007021"
-          android:versionName="1.7.21b5">
+          android:versionName="1.7.21b15">
 
     <uses-sdk
         android:minSdkVersion="21"
@@ -56,6 +56,7 @@
     <!-- Following used for getting the status of the contacts sync adapter -->
     <uses-permission android:name="android.permission.READ_SYNC_STATS"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <uses-feature
         android:name="android.hardware.telephony"
@@ -522,6 +523,9 @@
             android:label="@string/sim_import_title"
             android:theme="@style/PeopleThemeAppCompat.FullScreenDialog.SimImportActivity"/>
 
+        <activity
+            android:name=".util.barcode.CaptureActivity"
+            android:theme="@style/CaptureStyle" />
 
         <service
             android:name=".vcard.VCardService"

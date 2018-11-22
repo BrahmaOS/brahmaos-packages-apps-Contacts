@@ -46,6 +46,7 @@ import com.android.contacts.model.RawContactDelta;
 import com.android.contacts.model.ValuesDelta;
 import com.android.contacts.model.account.AccountType.EditField;
 import com.android.contacts.model.dataitem.DataKind;
+import com.android.contacts.util.DisplayUtil;
 import com.android.contacts.util.PhoneNumberFormatter;
 
 /**
@@ -59,7 +60,6 @@ public class TextFieldsEditorView extends LabeledEditorView {
     private EditText[] mFieldEditTexts = null;
     private ViewGroup mFields = null;
     protected View mExpansionViewContainer;
-    protected ImageView mOperateView;
     protected ImageView mExpansionView;
     protected String mCollapseButtonDescription;
     protected String mExpandButtonDescription;
@@ -70,6 +70,8 @@ public class TextFieldsEditorView extends LabeledEditorView {
     private int mMinFieldHeight;
     private int mPreviousViewHeight;
     private int mHintTextColorUnfocused;
+    protected ImageView mOperateView;
+    private OperateListener mOperateListener;
 
     public TextFieldsEditorView(Context context) {
         super(context);
@@ -83,6 +85,17 @@ public class TextFieldsEditorView extends LabeledEditorView {
         super(context, attrs, defStyle);
     }
 
+    public interface OperateListener {
+        /**
+         * Handle when click [operate] image view.
+         */
+        void onClickOperateView(TextFieldsEditorView view, DataKind kind);
+    }
+
+    public void setOperateListener(OperateListener listener) {
+        mOperateListener = listener;
+    }
+
     /** {@inheritDoc} */
     @Override
     protected void onFinishInflate() {
@@ -93,9 +106,9 @@ public class TextFieldsEditorView extends LabeledEditorView {
 
         mMinFieldHeight = getContext().getResources().getDimensionPixelSize(
                 R.dimen.editor_min_line_item_height);
-        mFields = (ViewGroup) findViewById(R.id.editors);
+        mFields = findViewById(R.id.editors);
         mHintTextColorUnfocused = getResources().getColor(R.color.editor_disabled_text_color);
-        mExpansionView = (ImageView) findViewById(R.id.expansion_view);
+        mExpansionView = findViewById(R.id.expansion_view);
         mOperateView = findViewById(R.id.operate);
         mCollapseButtonDescription = getResources()
                 .getString(R.string.collapse_fields_description);
@@ -192,17 +205,21 @@ public class TextFieldsEditorView extends LabeledEditorView {
         mExpansionViewContainer.setVisibility(shouldExist ? View.VISIBLE : View.INVISIBLE);
     }
 
-    public static int dip2px(Context context, float dpValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
-    }
-
-    private void setupOperateView(boolean showOperate, int iconResourceId, EditText fieldView) {
+    private void setupOperateView(boolean showOperate, int iconResourceId, EditText fieldView, DataKind kind) {
         if (mOperateView != null) {
             mOperateView.setVisibility(showOperate ? View.VISIBLE : View.GONE);
             if (showOperate) {
                 mOperateView.setImageDrawable(getContext().getDrawable(iconResourceId));
-                fieldView.setPadding(0, 0, dip2px(getContext(), 40), 0);
+                fieldView.setPadding(0, 0, DisplayUtil.dip2px(getContext(), 40), 0);
+                mOperateView.setClickable(true);
+                mOperateView.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mOperateListener != null) {
+                            mOperateListener.onClickOperateView(TextFieldsEditorView.this, kind);
+                        }
+                    }
+                });
             }
         }
     }
@@ -295,9 +312,9 @@ public class TextFieldsEditorView extends LabeledEditorView {
             // Show scan icon for ethereum and bitcoin account
             if (ContactsContract.CommonDataKinds.EthereumAccountAddress.CONTENT_ITEM_TYPE.equals(kind.mimeType)
                     || ContactsContract.CommonDataKinds.BitcoinAccountAddress.CONTENT_ITEM_TYPE.equals(kind.mimeType)) {
-                setupOperateView(true, R.drawable.quantum_ic_scan_vd_theme_24, fieldView);
+                setupOperateView(true, R.drawable.quantum_ic_scan_vd_theme_24, fieldView, kind);
             } else {
-                setupOperateView(false, 0, fieldView);
+                setupOperateView(false, 0, fieldView, null);
             }
 
             // Show the delete button if we have a non-empty value
