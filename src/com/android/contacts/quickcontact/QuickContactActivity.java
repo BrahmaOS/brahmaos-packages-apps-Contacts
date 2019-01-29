@@ -27,6 +27,7 @@ import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
@@ -263,6 +264,13 @@ public class QuickContactActivity extends ContactsActivity {
     private static final String CALL_ORIGIN_QUICK_CONTACTS_ACTIVITY =
             "com.android.contacts.quickcontact.QuickContactActivity";
 
+    public static final String PARAM_PAY_BLOCKCHAIN_TYPE = "blockchain";
+    public static final String PARAM_PAY_RECEIPT_ADDRESS = "receipt.address";
+    public static final String PARAM_PAY_SCHEME = "brahmapay";
+
+    public static final int ETHEREUM_TYPE = 1;
+    public static final int BITCOIN_TYPE = 2;
+
     // Set true in {@link #onCreate} after orientation change for later use in processIntent().
     private boolean mIsRecreatedInstance;
     private boolean mShortcutUsageReported = false;
@@ -424,6 +432,13 @@ public class QuickContactActivity extends ContactsActivity {
                 finish();
                 RequestDesiredPermissionsActivity.startPermissionActivity(
                         QuickContactActivity.this);
+                return;
+            }
+            
+            final Uri payUri = intent.getData();
+            if (payUri != null && payUri.getScheme() != null &&
+                    payUri.getScheme().equals(PARAM_PAY_SCHEME)) {
+                QuickContactActivity.this.startActivity(intent);
                 return;
             }
 
@@ -1930,9 +1945,9 @@ public class QuickContactActivity extends ContactsActivity {
                 subHeader = res.getString(R.string.header_ethereum_account_address_entry);
                 iconResourceId = R.drawable.quantum_ic_ethereum_vd_theme_24;
                 icon = res.getDrawable(iconResourceId);
-                alternateIntent = new Intent(Intent.ACTION_SENDTO,
-                        Uri.fromParts(ContactsUtils.SCHEME_SMSTO, "18912345678", null));
-                alternateIntent.putExtra(EXTRA_ACTION_TYPE, ActionType.SMS);
+                alternateIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("brahmapay:quicktransfer"));
+                alternateIntent.putExtra(PARAM_PAY_RECEIPT_ADDRESS, address);
+                alternateIntent.putExtra(PARAM_PAY_BLOCKCHAIN_TYPE, ETHEREUM_TYPE);
                 alternateIcon = res.getDrawable(R.drawable.quantum_ic_transfer_vd_theme_24);
                 alternateContentDescription.append(res.getString(R.string.sms_custom, header));
                 entryContextMenuInfo = new EntryContextMenuInfo(header, subHeader,
@@ -1946,9 +1961,9 @@ public class QuickContactActivity extends ContactsActivity {
                 subHeader = res.getString(R.string.header_bitcoin_account_address_entry);
                 iconResourceId = R.drawable.quantum_ic_bitcoin_vd_theme_24;
                 icon = res.getDrawable(iconResourceId);
-                alternateIntent = new Intent(Intent.ACTION_SENDTO,
-                        Uri.fromParts(ContactsUtils.SCHEME_SMSTO, "18912345678", null));
-                alternateIntent.putExtra(EXTRA_ACTION_TYPE, ActionType.SMS);
+                alternateIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("brahmapay:quicktransfer"));
+                alternateIntent.putExtra(PARAM_PAY_RECEIPT_ADDRESS, address);
+                alternateIntent.putExtra(PARAM_PAY_BLOCKCHAIN_TYPE, BITCOIN_TYPE);
                 alternateIcon = res.getDrawable(R.drawable.quantum_ic_transfer_vd_theme_24);
                 alternateContentDescription.append(res.getString(R.string.sms_custom, header));
                 entryContextMenuInfo = new EntryContextMenuInfo(header, subHeader,

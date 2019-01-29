@@ -63,6 +63,7 @@ public class RequestPermissionsActivity extends RequestPermissionsActivityBase {
             permissions.add(permission.GET_ACCOUNTS);
             permissions.add(permission.READ_CONTACTS);
             permissions.add(permission.WRITE_CONTACTS);
+            permissions.add(permission.CAMERA);
 
             if (packageManager.hasSystemFeature(PackageManager.FEATURE_TELEPHONY)) {
                 // Phone group
